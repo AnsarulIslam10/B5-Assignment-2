@@ -1,33 +1,51 @@
 # Bonus Section (Answer Any 5 Questions on readme.md in Bangla) → 10 Marks
 
 ## 1. What is PostgreSQL?
-PostgreSQL also known as postgres is a powerfull open source object relational database system with over 35 years of active development. It was originally developed at the University of California, Berkeley in the 1980s, PostgreSQL has evolved into one of the most sophisticated database systems available today.
-PostgreSQL supports both SQL and JSON querying. 
-PostgreSQL is used as a primary database for many web applications as well as mobile analysis applications.
-PostgreSQL is simple and easy to learn. and it's completely free unlike some other databases that cost thousands of dollars, postgreSQL is 100% free. Anyone can download and use it for their projects.
+
+PostgreSQL, যেটাকে সংক্ষেপে postgres বলা হয়, এটা একটি শক্তিশালী open-source object-relational database system যেটার ৩৫ বছরের বেশি active development history আছে। এটা প্রথমে ১৯৮০-এর দশকে University of California, Berkeley-তে develop করা হয়েছিল।
+
+PostgreSQL এখনকার দিনে সবচেয়ে advanced database system গুলোর একটি। এটা SQL এবং JSON উভয় ধরনের querying সাপোর্ট করে।
+
+অনেক web application এবং mobile analysis application-এ এটি primary database হিসেবে ব্যবহৃত হয়।
+
+PostgreSQL শেখা সহজ এবং এটি একদম ফ্রি, যেখানে অন্য অনেক database ব্যবহারে হাজার হাজার ডলার লাগে, সেখানে postgreSQL একদম ১০০% ফ্রি — যে কেউ এটা ডাউনলোড করে নিজের প্রোজেক্টে ব্যবহার করতে পারে।
+
+---
 
 ## 2. What is the purpose of a database schema in PostgreSQL?
-In PostgreSQL, a schema is a way to organize objects like tables, views, functions, constraints, indexes, data types into groups. It helps with better management and organization of the database. </br>
-A single database can have more then one schema. but a schema only belongs to one database. </br>
-Here are some purposes of schemas:
-- **Organization and structure**: Helps logically group related objects.
-- **Security and Access Control**: Permissions can be managed at the schema level.
-- **Avoiding Name Conflicts**: Different schemas can have tables or functions with the same name without conflict.
-- **Easier Maintenance**: Makes it simpler to manage and maintain large databases.
+
+PostgreSQL-এ schema হলো একটা logical structure যেটা table, view, function, constraint, index, data type ইত্যাদি জিনিসগুলোকে গ্রুপ করে manage করতে সাহায্য করে।
+
+একটি database-এর মধ্যে একাধিক schema থাকতে পারে, কিন্তু প্রতিটা schema শুধুমাত্র একটি database-এর অন্তর্ভুক্ত হয়।
+
+Schema-এর কিছু প্রধান উদ্দেশ্য:
+
+* **Organization and structure**: related objects গুলোকে logically group করে।
+* **Security and Access Control**: schema level-এ permission set করা যায়।
+* **Avoiding Name Conflicts**: এক schema-এ `table1`, আরেকটাতে একই নামে `table1` থাকলেও conflict হবে না।
+* **Easier Maintenance**: বড় database সহজে manage ও maintain করা যায়।
+
+---
 
 ## 3. Explain the Primary Key and Foreign Key concepts in PostgreSQL.
-**Primary Key**: A Primary Key is a unique identifier for each record in a table. It's like an ID card for each row in a table.
-- it's unuquely identifies every record
-- it must be unique.
-- it can't be empty.
-    ```
-    CREATE TABLE users (
-        user_id SERIAL PRIMARY KEY,
-        name VARCHAR(100)
-    );
-    ```
-Here, `user_id` is the primary key. </br></br>
-**Foreign Key**: A Foreign Key is the primary key of another table. for example:
+
+**Primary Key** হলো table-এর প্রতিটি row বা record-এর জন্য একটা unique identifier — একরকম ID card এর মতো।
+
+* এটা প্রতিটি record কে uniquely identify করে।
+* এটা unique হতে হবে।
+* এটা null (খালি) হতে পারে না।
+
+```
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+```
+
+এখানে `user_id` হচ্ছে primary key।
+
+</br>**Foreign Key** হচ্ছে অন্য একটা table-এর primary key যেটা current table-এ reference হিসেবে ব্যবহৃত হয়।
+
 ```
 CREATE TABLE orders (
   order_id SERIAL PRIMARY KEY,
@@ -35,32 +53,46 @@ CREATE TABLE orders (
   order_date DATE
 );
 ```
-In this example:
-- `order_id` is the Primary Key of `orders` table. 
-- `user_id` is the Foreign Key of `orders` table. 
-- `user_id` refers to the Primary Key of `users` table.
 
-So when we use the `user_id` from the `users` table in the `orders` table, it becomes a foreign key because it creates relationship between the two tables.
+এই example-এ:
+
+* `order_id` হচ্ছে `orders` টেবিলের primary key।
+* `user_id` হচ্ছে foreign key, যেটা `users` টেবিলের primary key (`user_id`) কে reference করে।
+
+এইভাবে দুইটা table-এর মাঝে একটা relationship তৈরি হয়।
+
+---
 
 ## 4. What is the difference between the VARCHAR and CHAR data types?
-The main difference between the `VARCHAR` and `CHAR` is that `CHAR` has fixed size but `VARCHAR` has variable size.</br>
-`CHAR`:
-- Fixed lenght string.
-- No size indicator.
-- Static memory.
-- Programmer can use `CHAR` when the sizes of the column data entries are consistent. </br>
 
-`VARCHAR`:
-- Variable length charecter.
-- Variable memory.
-- Dynamic memory.
-- Programmer can use `VARCHAR` when the sizes of the column data entries change considerably.
+`CHAR` আর `VARCHAR` এর মূল পার্থক্য হলো — `CHAR` fixed size character রাখে, আর `VARCHAR` variable size character রাখে।
+
+**CHAR**:
+
+* Fixed length string রাখে।
+* প্রতিটা value same length নেয় (padding করে নেয় যদি কম হয়)।
+* Memory allocation static হয়।
+* যখন সব value একই size-এর হবে ধরে নেওয়া যায়, তখন `CHAR` ব্যবহার করা ভালো।
+
+**VARCHAR**:
+
+* Variable length string রাখে।
+* Data যতটুকু প্রয়োজন ততটুকু space নেয়।
+* Memory allocation dynamic হয়।
+* যখন data entry size বিভিন্ন রকম হয়, তখন `VARCHAR` বেশি উপযুক্ত।
+
+---
 
 ## 5. Explain the purpose of the WHERE clause in a SELECT statement.
-The purpose of `WHERE` clause in a `SELECT` statement is to filter rows from a table based on a specific condition. it ensures that only the rows that matches the condition are returned in the query result.
-for example:-
+
+`SELECT` statement-এ `WHERE` clause ব্যবহার করা হয় একটা নির্দিষ্ট condition অনুযায়ী table থেকে row filter করতে।
+
+মানে — শুধু যেসব row condition match করে, সেগুলোই return হবে।
+
+উদাহরণস্বরূপ:
+
 ```
-<!-- students -->
+  <!-- students -->
 +----+--------+-----+
 | id | name   | age |
 +----+--------+-----+
@@ -71,12 +103,17 @@ for example:-
 | 5  | Eren   | 18  |
 +----+--------+-----+
 ```
-Now if we want to see the data of students who are older then `18` then we can do it by using the `WHERE` clause in the `SELECT` statement. like this:-
+
+এখন যদি আমরা এমন students-এর data দেখতে চাই যাদের বয়স ১৮ বা তার বেশি, তাহলে query হবে:
+
 ```
 SELECT * FROM students WHERE age >= 18;
 ```
+
 **Output:**
+
 ```
+  <!-- students -->
 +----+--------+-----+
 | id | name   | age |
 +----+--------+-----+
@@ -85,4 +122,5 @@ SELECT * FROM students WHERE age >= 18;
 | 5  | Eren   | 18  |
 +----+--------+-----+
 ```
-The `WHERE age >= 18` part filters out Naruto and Luffy because they are under 18.
+
+এখানে `WHERE age >= 18` condition ব্যবহার করে Naruto এবং Luffy কে exclude করা হয়েছে কারণ তারা ১৮ বছরের কম।
